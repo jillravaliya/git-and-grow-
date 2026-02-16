@@ -1,126 +1,77 @@
-# Log File Parser
+# ATM System
 
-> Heard about automation with Python. Tried it myself with what I knew.
+> My father asked about his ATM card. I didn't know what a loop was. One full day later — this happened.
 
 ---
 
 ## What I Learned Before This
 
-Already knew strings, `if-elif-else`, operators, and `input()` from the previous projects. This time — learned three new string methods: `.split()`, `.replace()`, and `.endswith()`. Also learned f-strings for cleaner output.
+Already knew if-elif-else, nesting, string methods, and basic input/output. But there was always one problem — the code ran once and stopped. No way to repeat anything.
 
-These small tools opened up automation. `.split()` breaks strings into pieces. `.replace()` swaps text. `.endswith()` checks file types. That's enough to parse structured data.
+That changed here. Learned `while` loop — how to make code keep running until a condition is met. Also learned how to use a counter variable to track attempts.
 
-> Still no loops. Still no functions. Just discovered new tools and used them.
+> First time using loops. Everything before this ran once. This runs until you say stop.
 
 ---
 
 ## What's Inside This?
 
-One script with two parts. First part shows the new string methods. Second part uses them to automate log file parsing.
+One project. One new concept. Full day of grinding to make it work.
 
-- **String Methods Demo** — f-strings, `.split()`, `.replace()`
-- **Log File Parser** — automatic parsing using `.split()` and indexing
+- **ATM System** — password retry with 3 attempts, restart option
 
 ---
 
-# The Script
+# ATM System
 
-Two sections that build on each other. First shows what the tools do, then uses them for real automation.
+User enters a password. If wrong — try again. Only 3 attempts allowed. After 3 wrong tries — option to restart or exit. Correct password — access granted.
 
-## Part 1: String Methods Demo
+## The Story
 
-Shows f-strings for formatted output, `.split()` to break comma-separated hobbies into a list, and `.replace()` to swap words.
+Didn't know what a loop was. Was trying to understand what repeating means in code. Then my father asked if I had seen his ATM card — and it clicked. ATM machines repeat. Wrong password? Try again. Too many attempts? Locked out. Restart? Start over.
 
+That became the project. Took 4 hours just to understand while. Full day to make the whole thing work.
+
+## How It Works
+
+Two loops — one inside the other. Outer loop handles restart. Inner loop handles the 3 attempts.
+
+**The outer loop:**
 ```python
-name = "jill"
-age = 21
-work = "Engineer"
-hobby = "music,photography,coding"
-pursuits = hobby.split(",")
-routine = "programming"
-daily_routine = routine.replace("programming", "coding")
+restart = "yes"
 
-print(f"Hi, my name is {name}, my age is {age}, and i work as an {work}")
-print("My hobbies are basically ", pursuits)
-print(f"But believe me my mostly time goes in {daily_routine} !\n")
+while restart == "yes":
+    attempts = 0
+    restart = input("Machine : Do you want to start again? (yes/no): ").lower()
 ```
 
-**What happens:**
-- `hobby.split(",")` breaks `"music,photography,coding"` into `['music', 'photography', 'coding']`
-- `routine.replace("programming", "coding")` changes the word
-- f-strings make printing clean: `f"Hi, my name is {name}"` instead of string concatenation
-
-Simple demo. But it shows the tools work.
-
-## Part 2: Log File Parser
-
-User pastes a log file line like `-rw-r----- 1 root admin 7349974 24 Jan 17:51 wifi.log` and the code automatically extracts every piece — permissions, owner, group, size, date, time, filename.
-
-### The Problem
-
-Log files have structured data — all in one line, separated by spaces. Reading it manually is annoying. What if the code could automatically break it apart?
-
-That's automation. Not with loops or complex logic. Just with `.split()` and knowing where each piece sits.
-
-### How It Works
-
-**Step 1** — check the file type using `.endswith()`:
-
+**The inner loop:**
 ```python
-filename = input("Paste here your files, i will ask you type ! : \n").strip().lower()
+while attempts < 3:
+    password = int(input("Machine : Enter your password : "))
 
-if filename.endswith(".txt"):
-    print("These is a text file !\n")
-elif filename.endswith(".log"):
-    print("These is a log file !\n")
-else:
-    print("These filetype is unknown!")
+    if password != real_password:
+        attempts = attempts + 1
+        print("Machine : Wrong password, try again!")
+    else:
+        attempts = attempts + 3
+        print("Machine : Wait few seconds for your amount!")
 ```
 
-**Step 2** — `.split()` breaks the string at every space and puts the pieces into a list:
+## The Interesting Part
 
-```python
-your_data = filename.split()
-# Input: "-rw-r----- 1 root admin 7349974 24 Jan 17:51 wifi.log"
-# Result: ['-rw-r-----', '1', 'root', 'admin', '7349974', '24', 'Jan', '17:51', 'wifi.log']
-```
+Look at the correct password case — `attempts = attempts + 3`. That is not the clean way. The clean way would be `break`. But `break` was not known yet.
 
-**Step 3** — each piece has a position (index). Position 0 is permissions, position 2 is owner, position 4 is size, etc. Just grab them:
-
-```python
-permissions = your_data[0]   # '-rw-r-----'
-hard_links = your_data[1]    # '1'
-owner = your_data[2]         # 'root'
-group = your_data[3]         # 'admin'
-size = your_data[4]          # '7349974'
-date = your_data[5]          # '24'
-month = your_data[6]         # 'Jan'
-time = your_data[7]          # '17:51'
-filename = your_data[8]      # 'wifi.log'
-
-print("Your permissions are : ", permissions)
-print("Your hard_links are : ", hard_links)
-# ... and so on for each piece
-```
-
-Done. Automated parsing without loops or functions.
-
-### The Discovery
-
-The interesting part — this is automation. Not with fancy libraries or complex code. Just with `.split()` and knowing the structure.
-
-Log files are always formatted the same way. Permissions first, then owner, then group, etc. So you don't need to search or parse intelligently. Just split at spaces and grab by position.
-
-That's the small discovery. Automation doesn't always need loops or functions. Sometimes it just needs understanding the pattern.
+So instead — jump the counter to 3. Loop condition is `attempts < 3`. Counter hits 3, loop exits. It works!
 
 ---
 
 # What Happened Here
 
-Heard about automation with Python. Didn't know loops or functions yet. But found `.split()`, `.replace()`, `.endswith()`, and f-strings. That was enough to build something that automatically parses structured text.
+First time using loops. Took a whole day. But the idea clicked because of a real ATM machine.
 
-Small project. But the idea clicked — if data has a pattern, you can automate it with simple tools.
+The code is not clean. The +3 hack is funny in hindsight. But it works exactly like a real ATM.
 
 ---
 
-> Automation doesn't need to be complex. It just needs to work.
+> Four hours to understand while. One full day to build this. That is how loops started.
